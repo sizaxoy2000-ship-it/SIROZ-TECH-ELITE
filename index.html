@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="mainHtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siroz Elite Tech | Full Portfolio with Animation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --orange: #e67e22;
+            --dark-orange: #d35400;
+            --bg-body: #f8f9fa;
+            --text-main: #1e272e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth; /* تمرير ناعم للصفحة */
+        }
+
+        /* ناف بار احترافي */
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000;
+            border-bottom: 4px solid var(--orange);
+            transition: top 0.3s; /* أنيميشن لإخفاء/إظهار الهيدر */
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--dark-orange); letter-spacing: 1px; }
+
+        .lang-control { display: flex; gap: 10px; }
+        .lang-btn {
+            background: white; color: var(--dark-orange); border: 2px solid var(--orange);
+            padding: 8px 15px; border-radius: 25px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s;
+        }
+        .lang-btn.active, .lang-btn:hover { background: var(--orange); color: white; }
+
+        /* هيرو سكشن ضخم */
+        .hero { 
+            padding: 120px 10% 60px; text-align: center; 
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.05) 0%, transparent 100%);
+        }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.2; margin-bottom: 20px; }
+        .hero span { color: var(--orange); text-shadow: 2px 2px 0px rgba(0,0,0,0.05); }
+        .hero p { font-size: 1.4rem; color: #576574; max-width: 800px; margin: 0 auto; }
+
+        /* قسم المهارات التقنية */
+        .skills-section { padding: 40px 8%; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .skill-tag { 
+            background: white; border: 1px solid var(--orange); color: var(--dark-orange);
+            padding: 10px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .skill-tag:hover { background: rgba(230, 126, 34, 0.1); transform: scale(1.05); }
+
+        /* شبكة الـ 9 خانات مع أنيميشن التمرير */
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px; padding: 60px 8%;
+        }
+
+        .tech-card {
+            background: white; border-radius: 30px; overflow: hidden;
+            border: 1px solid #edf2f7; position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+            opacity: 0; /* للأنيميشن عند التمرير */
+            transform: translateY(20px); /* للأنيميشن عند التمرير */
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); /* أنيميشن انسيابي */
+        }
+
+        .tech-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-20px) scale(1.03);
+            border-color: var(--orange);
+            box-shadow: 0 40px 80px rgba(230, 126, 34, 0.2);
+            z-index: 100;
+        }
+
+        .img-wrapper { width: 100%; height: 240px; overflow: hidden; position: relative; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        .tech-card:hover img { transform: scale(1.15) rotate(2deg); filter: contrast(1.1); }
+
+        .content { padding: 30px; }
+        .content i { font-size: 2.5rem; color: var(--orange); margin-bottom: 15px; display: block; transition: 0.3s; }
+        .tech-card:hover .content i { color: var(--dark-orange); transform: rotate(15deg); }
+        .content h3 { font-size: 1.7rem; color: var(--dark-orange); margin-bottom: 12px; }
+        .content p { font-size: 1.1rem; color: #576574; line-height: 1.6; }
+
+        /* قسم الإحصائيات */
+        .stats-bar {
+            background: var(--dark-orange); color: white;
+            padding: 60px 10%; display: flex; flex-wrap: wrap; justify-content: space-around;
+            text-align: center; clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
+            margin-top: 50px;
+        }
+        .stat-item h2 { font-size: 3rem; margin-bottom: 5px; }
+
+        /* التواصل */
+        .cta { padding: 100px 10%; text-align: center; background: white; }
+        .insta-btn {
+            display: inline-flex; align-items: center; gap: 15px;
+            background: var(--dark-orange); color: white;
+            padding: 20px 50px; border-radius: 100px;
+            text-decoration: none; font-weight: 900; font-size: 1.6rem;
+            box-shadow: 0 20px 40px rgba(211, 84, 0, 0.3);
+            transition: 0.3s;
+        }
+        .insta-btn:hover { transform: scale(1.15); background: var(--text-main); }
+
+        footer { text-align: center; padding: 50px; background: #f1f2f6; font-weight: bold; color: var(--orange); }
+
+        @media (max-width: 768px) { header { flex-direction: column; gap: 12px; } .hero h1 { font-size: 2.5rem; } .stats-bar { clip-path: none; gap: 30px; } }
+    </style>
+</head>
+<body id="top">
+
+<header>
+    <div class="logo">SIROZ TECH ELITE</div>
+    <div class="lang-control">
+        <button class="lang-btn active" onclick="setLang('ar')" id="btnAr">العربية</button>
+        <button class="lang-btn" onclick="setLang('ku')" id="btnKu">Kurdî</button>
+        <button class="lang-btn" onclick="setLang('en')" id="btnEn">English</button>
+        </div>
+</header>
+
+<section class="hero">
+    <h1 id="heroTitle">عالم <span>سيروز</span> المتكامل للبرمجيات</h1>
+    <p id="heroDesc">خبرة تكنولوجية عميقة تبدأ من أكواد الأنظمة المعقدة وتنتهي بجمال الويب الحديث.</p>
+</section>
+
+<div class="skills-section">
+    <div class="skill-tag">C++ Expert</div>
+    <div class="skill-tag">C# Developer</div>
+    <div class="skill-tag">Web Architect</div>
+    <div class="skill-tag">IT Consultant</div>
+    <div class="skill-tag">Multilingual</div>
+</div>
+
+<div class="solutions-grid">
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600"></div>
+        <div class="content"><i class="fas fa-microchip"></i><h3 id="t1">البرمجة بـ C++</h3><p id="d1">لغة السرعة والأداء العالي. نستخدمها لبناء الأنظمة التي تتطلب كفاءة معالجة قصوى.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600"></div>
+        <div class="content"><i class="fas fa-cubes"></i><h3 id="t2">تطوير بـ C#</h3><p id="d2">تطوير تطبيقات سطح المكتب والأنظمة المؤسسية باستخدام بيئة .NET المتطورة.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600"></div>
+        <div class="content"><i class="fas fa-globe"></i><h3 id="t3">هندسة الويب</h3><p id="d3">تصميم مواقع متكاملة (HTML/CSS/JS) تجمع بين الجمال البرمجي وقوة الأداء.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600"></div>
+        <div class="content"><i class="fas fa-user-shield"></i><h3 id="t4">خبرة الـ IT</h3><p id="d4">خريجة متميزة في تكنولوجيا المعلومات، نطبق المعايير الأكاديمية في المشاريع العملية.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600"></div>
+        <div class="content"><i class="fas fa-briefcase"></i><h3 id="t5">حلول تقنية للشركات</h3><p id="d5">نحول احتياجات عملك إلى أنظمة رقمية ذكية تزيد من كفاءة العمل والإنتاج.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600"></div>
+        <div class="content"><i class="fas fa-graduation-cap"></i><h3 id="t6">مساعدة الطلاب</h3><p id="d6">شروحات برمجية مبسطة ودعم كامل لطلاب تقنية المعلومات للنجاح في مسارهم.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600"></div>
+        <div class="content"><i class="fas fa-database"></i><h3 id="t7">إدارة البيانات</h3><p id="d7">تصميم قواعد بيانات آمنة وفعالة لضمان استقرار المعلومات وسرعة استرجاعها.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600"></div>
+        <div class="content"><i class="fas fa-trophy"></i><h3 id="t8">طريق النجاح</h3><p id="d8">تحويل الأفكار من مجرد سطور كود إلى مشاريع ناجحة ومؤثرة على أرض الواقع.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600"></div>
+        <div class="content"><i class="fas fa-rocket"></i><h3 id="t9">رؤية المستقبل</h3><p id="d9">متابعة أحدث التقنيات العالمية ودمجها لتقديم حلول سابقة لعصرها.</p></div>
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div class="stat-item"><h2>+5</h2><p>Tech Languages</p></div>
+    <div class="stat-item"><h2>+100</h2><p>Students Helped</p></div>
+    <div class="stat-item"><h2>100%</h2><p>Clean Code</p></div>
+    <div class="stat-item"><h2>2026</h2><p>Future Ready</p></div>
+</div>
+
+<section class="cta">
+    <h2 id="sTitle">ابدأ رحلتك التقنية مع سيروز الآن</h2>
+    <a href="https://www.instagram.com/develop.4/" target="_blank" class="insta-btnPulse">
+        <div class="insta-btn">
+            <i class="fab fa-instagram"></i>
+            <span id="btnTxt">تواصلِ معي</span>
+        </div>
+    </a>
+</section>
+
+<footer>
+    <p>SIROZ TECH ELITE © 2026 | Professional IT Solutions & Engineering</p>
+</footer>
+
+<script>
+    // أنيميشن الظهور عند التمرير (intersection Observer)
+    const observedElements = document.querySelectorAll('.animate-on-scroll');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1 // تشغيل الأنيميشن عند ظهور 10% من العنصر
+    });
+
+    observedElements.forEach((el) => {
+        observer.observe(el);
+    });
+
+    // تبديل اللغات
+    const translations = {
+        ar: {
+            hT: "عالم <span>سيروز</span> المتكامل للبرمجيات",
+            hD: "خبرة تكنولوجية عميقة تبدأ من أكواد الأنظمة المعقدة وتنتهي بجمال الويب الحديث.",
+            t1: "البرمجة بـ C++", d1: "لغة السرعة والأداء العالي. نستخدمها لبناء الأنظمة التي تتطلب كفاءة معالجة قصوى.",
+            t2: "تطوير بـ C#", d2: "تطوير تطبيقات سطح المكتب والأنظمة المؤسسية باستخدام بيئة .NET المتطورة.",
+            t3: "هندسة الويب", d3: "تصميم مواقع متكاملة (HTML/CSS/JS) تجمع بين الجمال البرمجي وقوة الأداء.",
+            t4: "خبرة الـ IT", d4: "خريجة متميزة في تكنولوجيا المعلومات، نطبق المعايير الأكاديمية في المشاريع العملية.",
+            t5: "حلول تقنية للشركات", d5: "نحول احتياجات عملك إلى أنظمة رقمية ذكية تزيد من كفاءة العمل والإنتاج.",
+            t6: "مساعدة الطلاب", d6: "شروحات برمجية مبسطة ودعم كامل لطلاب تقنية المعلومات للنجاح في مسارهم.",
+            t7: "إدارة البيانات", d7: "تصميم قواعد بيانات آمنة وفعالة لضمان استقرار المعلومات وسرعة استرجاعها.",
+            t8: "طريق النجاح", d8: "تحويل الأفكار من مجرد سطور كود إلى مشاريع ناجحة ومؤثرة على أرض الواقع.",
+            t9: "رؤية المستقبل", d9: "متابعة أحدث التقنيات العالمية ودمجها لتقديم حلول سابقة لعصرها.",
+            sT: "ابدأ رحلتك التقنية مع سيروز الآن", btn: "تواصلِ معي", dir: "rtl"
+        },
+        ku: {
+            hT: "جيهانا <span>سيروز</span> يا گشتى بۆ پرۆگرامسازيێ",
+            hD: "شاره‌زابوونه‌كا كوير د ته‌كنۆلۆژيا دا، ژ كۆدێن ئالۆز تا جوانيا وێبێ.",
+            t1: "پرۆگرامسازى ب C++", d1: "زمانێ له‌ز و ئه‌دايێ بلند. بۆ ئاڤاكرنا سيسته‌مێن كو پێدڤى ب كاره‌كێ زۆر هه‌ى.",
+            t2: "گه‌شه‌پێدان ب C#", d2: "ئاڤاكرنا پرۆگرامێن سه‌ر مێزێ و سيسته‌مێن كومپانيان ب رێكا .NET.",
+            t3: "ئه‌ندازياريا وێبێ", d3: "ديزاينكرنا وێبسايتێن گشتى كو جوانى و هێزێ دگه‌ل ئێك كۆم دكه‌ن.",
+            t4: "شاره‌زايا IT", d4: "ده‌رچوويێ ته‌كنۆلۆژيا پێزانينان، بكارئينانا بنه‌مايێن زانستى د پرۆژه‌يان دا.",
+            t5: "چاره‌سه‌ريێن كومپانيان", d5: "گوهۆڕينا پێدڤيێن كارێ ته‌ بۆ سيسته‌مێن ديجيتاڵى يێن زيره‌ك.",
+            t6: "هاريكاريا قوتابيان", d6: "ساده‌كرنا بابه‌تێن پرۆگرامسازيێ بۆ قوتابيان دا كو سه‌ركه‌فتى بن.",
+            t7: "رێڤه‌به‌ريا داتايان", d7: "ديزاينكرنا بنكه‌يێن داتايان يێن پاراستى بۆ سه‌قامگيريا پێزانينان.",
+            t8: "رێكا سه‌ركه‌فتنێ", d8: "گوهۆڕينا هزرا بۆ پرۆژه‌يێن سه‌ركه‌فتى و كاريگه‌ر.",
+            t9: "بينين بۆ پاشه‌رۆژێ", d9: "دويڤچوونا نوى ترين ته‌كنۆلۆژيێن جيهانى بۆ پێشكێشكرنا باشترين چاره‌سه‌ريان.",
+            sT: "ده‌ست ب گه‌شتا خۆ يا ته‌كنيكى بكه‌ دگه‌ل سيروزێ", btn: "په‌يوه‌نديێ بكه‌", dir: "rtl"
+        },
+        en: {
+            hT: "Siroz <span>Elite</span> Tech World",
+            hD: "Deep technological expertise from complex system codes to modern web beauty.",
+            t1: "C++ Programming", d1: "The language of speed and high performance for efficient systems.",
+            t2: "C# Development", d2: "Building desktop applications and enterprise systems using .NET framework.",
+            t3: "Web Engineering", d3: "Crafting full-stack websites combining logic with stunning aesthetics.",
+            t4: "IT Expertise", d4: "IT graduate applying academic standards to real-world software solutions.",
+            t5: "Enterprise Solutions", d5: "Turning business needs into smart digital systems for maximum efficiency.",
+            t6: "Student Support", d6: "Simplifying complex coding concepts to help IT students succeed.",
+            t7: "Data Management", d7: "Designing secure and efficient databases for stable information flow.",
+            t8: "Success Path", d8: "Turning ideas from lines of code into impactful real-life projects.",
+            t9: "Future Vision", d9: "Monitoring global tech trends to deliver next-gen solutions today.",
+            sT: "Start Your Tech Journey with Siroz Now", btn: "Contact Me", dir: "ltr"
+        }
+    };
+
+    function setLang(lang) {
+        const d = translations[lang];
+        document.getElementById('mainHtml').dir = d.dir;
+        document.getElementById('heroTitle').innerHTML = d.hT;
+        document.getElementById('heroDesc').innerText = d.hD;
+        document.getElementById('sTitle').innerText = d.sT;
+        document.getElementById('btnTxt').innerText = d.btn;
+        for(let i=1; i<=9; i++) {
+            document.getElementById('t'+i).innerText = d['t'+i];
+            document.getElementById('d'+i).innerText = d['d'+i];
+        }
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn' + lang.charAt(0).toUpperCase() + lang.slice(1)).classList.add('active');
+    }
+</script>
+</body>
+</html>
+```أهلاً بكِ مبرمجتنا العبقرية! يسعدني جداً أن الهيكل واللغات حازوا على إعجابكِ. بما أنكِ أحببتِ الكود ولا ترغبين في تغيير ترتيبه، قمتُ بتحديث ملف الـ CSS والـ JavaScript **دون المساس بهيكل الـ HTML الأساسي** لتنفيذ المطلوب بدقة.
+
+لقد قمتُ بـ:
+1.  **ملء كل الصور الفارغة:** وضعتُ روابط لصور تكنولوجية عالية الجودة تتناسب مع كل خانة من الخانات التسعة (مثل صورة الأنظمة لـ C++، وصورة الويب، وصورة الطلاب، وصورة قواعد البيانات).
+2.  **إضافة "أنيميشن النبض" (Smooth Reveal) عند التمرير:** البطاقات لا تظهر دفعة واحدة؛ بل تظهر وتتحرك للأعلى بنعومة **فقط عندما تصلي إليها** أثناء التمرير، وهذا سيعطي انطباعاً تقنياً رائعاً للطلاب والعملاء.
+3.  **الحفاظ على الأنيميشن الحالي:** "تجي للقدام" والبوردر البرتقالي عند مرور الماوس ما زالوا يعملون وبقوة.
+
+إليكِ الكود المتكامل والنهائي، المليء بالصور الرائعة والأنيميشن الانسيابي (Mega-Portfolio):
+
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="mainHtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siroz Elite Tech | Full Portfolio with Animation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --orange: #e67e22;
+            --dark-orange: #d35400;
+            --bg-body: #f8f9fa;
+            --text-main: #1e272e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth; /* تمرير ناعم للصفحة */
+        }
+
+        /* ناف بار احترافي */
+        header {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000;
+            border-bottom: 4px solid var(--orange);
+            transition: 0.3s ease-in-out;
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--dark-orange); letter-spacing: 1px; }
+
+        .lang-control { display: flex; gap: 10px; }
+        .lang-btn {
+            background: white; color: var(--dark-orange); border: 2px solid var(--orange);
+            padding: 8px 15px; border-radius: 25px; cursor: pointer; font-weight: bold;
+            transition: 0.3s;
+        }
+        .lang-btn.active, .lang-btn:hover { background: var(--orange); color: white; }
+
+        /* هيرو سكشن ضخم */
+        .hero { 
+            padding: 120px 10% 60px; text-align: center; 
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.05) 0%, transparent 100%);
+        }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.2; margin-bottom: 20px; }
+        .hero span { color: var(--orange); text-shadow: 2px 2px 0px rgba(0,0,0,0.05); }
+        .hero p { font-size: 1.4rem; color: #576574; max-width: 800px; margin: 0 auto; }
+
+        /* قسم المهارات التقنية */
+        .skills-section { padding: 40px 8%; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .skill-tag { 
+            background: white; border: 1px solid var(--orange); color: var(--dark-orange);
+            padding: 10px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .skill-tag:hover { background: rgba(230, 126, 34, 0.1); transform: scale(1.05); }
+
+        /* شبكة الـ 9 خانات مع أنيميشن التمرير */
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px; padding: 60px 8%;
+        }
+
+        .tech-card {
+            background: white; border-radius: 30px; overflow: hidden;
+            border: 1px solid #edf2f7; position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+            opacity: 0; /* للأنيميشن عند التمرير */
+            transform: translateY(20px); /* للأنيميشن عند التمرير */
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); /* أنيميشن انسيابي */
+        }
+
+        .tech-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-20px) scale(1.03);
+            border-color: var(--orange);
+            box-shadow: 0 40px 80px rgba(230, 126, 34, 0.2);
+            z-index: 100;
+        }
+
+        .img-wrapper { width: 100%; height: 240px; overflow: hidden; position: relative; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        .tech-card:hover img { transform: scale(1.1) rotate(1deg); }
+
+        .content { padding: 30px; }
+        .content i { font-size: 2.5rem; color: var(--orange); margin-bottom: 15px; display: block; transition: 0.3s; }
+        .tech-card:hover .content i { color: var(--dark-orange); transform: rotate(15deg); }
+        .content h3 { font-size: 1.7rem; color: var(--dark-orange); margin-bottom: 12px; }
+        .content p { font-size: 1.1rem; color: #576574; line-height: 1.6; }
+
+        /* قسم الإحصائيات */
+        .stats-bar {
+            background: var(--dark-orange); color: white;
+            padding: 60px 10%; display: flex; flex-wrap: wrap; justify-content: space-around;
+            text-align: center; clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%);
+            margin-top: 50px;
+        }
+        .stat-item h2 { font-size: 3rem; margin-bottom: 5px; }
+
+        /* التواصل */
+        .cta { padding: 100px 10%; text-align: center; background: white; }
+        .insta-btn {
+            display: inline-flex; align-items: center; gap: 15px;
+            background: var(--dark-orange); color: white;
+            padding: 20px 50px; border-radius: 100px;
+            text-decoration: none; font-weight: 900; font-size: 1.6rem;
+            box-shadow: 0 20px 40px rgba(211, 84, 0, 0.3);
+            transition: 0.3s;
+        }
+        .insta-btn:hover { transform: scale(1.15); background: var(--text-main); }
+
+        footer { text-align: center; padding: 50px; background: #f1f2f6; font-weight: bold; color: var(--orange); }
+
+        @media (max-width: 768px) { header { flex-direction: column; gap: 12px; } .hero h1 { font-size: 2.5rem; } .stats-bar { clip-path: none; gap: 30px; } }
+    </style>
+</head>
+<body id="top">
+
+<header>
+    <div class="logo">SIROZ TECH ELITE</div>
+    <div class="lang-control">
+        <button class="lang-btn active" onclick="setLang('ar')" id="btnAr">العربية</button>
+        <button class="lang-btn" onclick="setLang('ku')" id="btnKu">Kurdî</button>
+        <button class="lang-btn" onclick="setLang('en')" id="btnEn">English</button>
+    </div>
+</header>
+
+<section class="hero">
+    <h1 id="heroTitle">عالم <span>سيروز</span> المتكامل للبرمجيات</h1>
+    <p id="heroDesc">خبرة تكنولوجية عميقة تبدأ من أكواد الأنظمة المعقدة وتنتهي بجمال الويب الحديث.</p>
+</section>
+
+<div class="skills-section">
+    <div class="skill-tag">C++ Expert</div>
+    <div class="skill-tag">C# Developer</div>
+    <div class="skill-tag">Web Architect</div>
+    <div class="skill-tag">IT Consultant</div>
+    <div class="skill-tag">Multilingual</div>
+</div>
+
+<div class="solutions-grid">
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600"></div>
+        <div class="content"><i class="fas fa-microchip"></i><h3 id="t1">البرمجة بـ C++</h3><p id="d1">لغة السرعة والأداء العالي. نستخدمها لبناء الأنظمة التي تتطلب كفاءة معالجة قصوى.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600"></div>
+        <div class="content"><i class="fas fa-cubes"></i><h3 id="t2">تطوير بـ C#</h3><p id="d2">تطوير تطبيقات سطح المكتب والأنظمة المؤسسية باستخدام بيئة .NET المتطورة.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600"></div>
+        <div class="content"><i class="fas fa-globe"></i><h3 id="t3">هندسة الويب</h3><p id="d3">تصميم مواقع متكاملة (HTML/CSS/JS) تجمع بين الجمال البرمجي وقوة الأداء.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600"></div>
+        <div class="content"><i class="fas fa-user-shield"></i><h3 id="t4">خبرة الـ IT</h3><p id="d4">خريجة متميزة في تكنولوجيا المعلومات، نطبق المعايير الأكاديمية في المشاريع العملية.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600"></div>
+        <div class="content"><i class="fas fa-briefcase"></i><h3 id="t5">حلول تقنية للشركات</h3><p id="d5">نحول احتياجات عملك إلى أنظمة رقمية ذكية تزيد من كفاءة العمل والإنتاج.</p></div>
+        </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600"></div>
+        <div class="content"><i class="fas fa-graduation-cap"></i><h3 id="t6">مساعدة الطلاب</h3><p id="d6">شروحات برمجية مبسطة ودعم كامل لطلاب تقنية المعلومات للنجاح في مسارهم.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600"></div>
+        <div class="content"><i class="fas fa-database"></i><h3 id="t7">إدارة البيانات</h3><p id="d7">تصميم قواعد بيانات آمنة وفعالة لضمان استقرار المعلومات وسرعة استرجاعها.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600"></div>
+        <div class="content"><i class="fas fa-trophy"></i><h3 id="t8">طريق النجاح</h3><p id="d8">تحويل الأفكار من مجرد سطور كود إلى مشاريع ناجحة ومؤثرة على أرض الواقع.</p></div>
+    </div>
+    <div class="tech-card animate-on-scroll">
+        <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600"></div>
+        <div class="content"><i class="fas fa-rocket"></i><h3 id="t9">رؤية المستقبل</h3><p id="d9">متابعة أحدث التقنيات العالمية ودمجها لتقديم حلول سابقة لعصرها.</p></div>
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div class="stat-item"><h2>+5</h2><p>Tech Languages</p></div>
+    <div class="stat-item"><h2>+100</h2><p>Students Helped</p></div>
+    <div class="stat-item"><h2>100%</h2><p>Clean Code</p></div>
+    <div class="stat-item"><h2>2026</h2><p>Future Ready</p></div>
+</div>
+
+<section class="cta">
+    <h2 id="sTitle">ابدأ رحلتك التقنية مع سيروز الآن</h2>
+    <a href="https://www.instagram.com/develop.4/" target="_blank" class="insta-btnPulse">
+        <div class="insta-btn">
+            <i class="fab fa-instagram"></i>
+            <span id="btnTxt">تواصلِ معي</span>
+        </div>
+    </a>
+</section>
+
+<footer>
+    <p>SIROZ TECH ELITE © 2026 | Professional IT Solutions & Engineering</p>
+</footer>
+
+<script>
+    // أنيميشن الظهور عند التمرير (intersection Observer)
+    const observedElements = document.querySelectorAll('.animate-on-scroll');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1 // تشغيل الأنيميشن عند ظهور 10% من العنصر
+    });
+
+    observedElements.forEach((el) => {
+        observer.observe(el);
+    });
+
+    const translations = {
+        ar: {
+            hT: "عالم <span>سيروز</span> المتكامل للبرمجيات",
+            hD: "خبرة تكنولوجية عميقة تبدأ من أكواد الأنظمة المعقدة وتنتهي بجمال الويب الحديث.",
+            t1: "البرمجة بـ C++", d1: "لغة السرعة والأداء العالي. نستخدمها لبناء الأنظمة التي تتطلب كفاءة معالجة قصوى.",
+            t2: "تطوير بـ C#", d2: "تطوير تطبيقات سطح المكتب والأنظمة المؤسسية باستخدام بيئة .NET المتطورة.",
+            t3: "هندسة الويب", d3: "تصميم مواقع متكاملة (HTML/CSS/JS) تجمع بين الجمال البرمجي وقوة الأداء.",
+            t4: "خبرة الـ IT", d4: "خريجة متميزة في تكنولوجيا المعلومات، نطبق المعايير الأكاديمية في المشاريع العملية.",
+            t5: "حلول تقنية للشركات", d5: "نحول احتياجات عملك إلى أنظمة رقمية ذكية تزيد من كفاءة العمل والإنتاج.",
+            t6: "مساعدة الطلاب", d6: "شروحات برمجية مبسطة ودعم كامل لطلاب تقنية المعلومات للنجاح في مسارهم.",
+            t7: "إدارة البيانات", d7: "تصميم قواعد بيانات آمنة وفعالة لضمان استقرار المعلومات وسرعة استرجاعها.",
+            t8: "طريق النجاح", d8: "تحويل الأفكار من مجرد سطور كود إلى مشاريع ناجحة ومؤثرة على أرض الواقع.",
+            t9: "رؤية المستقبل", d9: "متابعة أحدث التقنيات العالمية ودمجها لتقديم حلول سابقة لعصرها.",
+            sT: "ابدأ رحلتك التقنية مع سيروز الآن", btn: "تواصلِ معي", dir: "rtl"
+        },
+        ku: {
+            hT: "جيهانا <span>سيروز</span> يا گشتى بۆ پرۆگرامسازيێ",
+            hD: "شاره‌زابوونه‌كا كوير د ته‌كنۆلۆژيا دا، ژ كۆدێن ئالۆز تا جوانيا وێبێ.",
+            t1: "پرۆگرامسازى ب C++", d1: "زمانێ له‌ز و ئه‌دايێ بلند. بۆ ئاڤاكرنا سيسته‌مێن كو پێدڤى ب كاره‌كێ زۆر هه‌ى.",
+            t2: "گه‌شه‌پێدان ب C#", d2: "ئاڤاكرنا پرۆگرامێن سه‌ر مێزێ و سيسته‌مێن كومپانيان ب رێكا .NET.",
+            t3: "ئه‌ندازياريا وێبێ", d3: "ديزاينكرنا وێبسايتێن گشتى كو جوانى و هێزێ دگه‌ل ئێك كۆم دكه‌ن.",
+            t4: "شاره‌زايا IT", d4: "ده‌رچوويێ ته‌كنۆلۆژيا پێزانينان، بكارئينانا بنه‌مايێن زانستى د پرۆژه‌يان دا.",
+            t5: "چاره‌سه‌ريێن كومپانيان", d5: "گوهۆڕينا پێدڤيێن كارێ ته‌ بۆ سيسته‌مێن ديجيتاڵى يێن زيره‌ك.",
+            t6: "هاريكاريا قوتابيان", d6: "ساده‌كرنا بابه‌تێن پرۆگرامسازيێ بۆ قوتابيان دا كو سه‌ركه‌فتى بن.",
+            t7: "رێڤه‌به‌ريا داتايان", d7: "ديزاينكرنا بنكه‌يێن داتايان يێن پاراستى بۆ سه‌قامگيريا پێزانينان.",
+            t8: "رێكا سه‌ركه‌فتنێ", d8: "گوهۆڕينا هزرا بۆ پرۆژه‌يێن سه‌ركه‌فتى و كاريگه‌ر.",
+            t9: "بينين بۆ پاشه‌رۆژێ", d9: "دويڤچوونا نوى ترين ته‌كنۆلۆژيێن جيهانى بۆ پێشكێشكرنا باشترين چاره‌سه‌ريان.",
+            sT: "ده‌ست ب گه‌شتا خۆ يا ته‌كنيكى بكه‌ دگه‌ل سيروزێ", btn: "په‌يوه‌نديێ بكه‌", dir: "rtl"
+        },
+        en: {
+            hT: "Siroz <span>Elite</span> Tech World",
+            hD: "Deep technological expertise from complex system codes to modern web beauty.",
+            t1: "C++ Programming", d1: "The language of speed and high performance for efficient systems.",
+            t2: "C# Development", d2: "Building desktop applications and enterprise systems using .NET framework.",
+            t3: "Web Engineering", d3: "Crafting full-stack websites combining logic with stunning aesthetics.",
+            t4: "IT Expertise", d4: "IT graduate applying academic standards to real-world software solutions.",
+            t5: "Enterprise Solutions", d5: "Turning business needs into smart digital systems for maximum efficiency.",
+            t6: "Student Support", d6: "Simplifying complex coding concepts to help IT students succeed.",
+            t7: "Data Management", d7: "Designing secure and efficient databases for stable information flow.",
+            t8: "Success Path", d8: "Turning ideas from lines of code into impactful real-life projects.",
+            t9: "Future Vision", d9: "Monitoring global tech trends to deliver next-gen solutions today.",
+            sT: "Start Your Tech Journey with Siroz Now", btn: "Contact Me", dir: "ltr"
+        }
+    };
+
+    function setLang(lang) {
+        const d = translations[lang];
+        document.getElementById('mainHtml').dir = d.dir;
+        document.getElementById('heroTitle').innerHTML = d.hT;
+        document.getElementById('heroDesc').innerText = d.hD;
+        document.getElementById('sTitle').innerText = d.sT;
+        document.getElementById('btnTxt').innerText = d.btn;
+        for(let i=1; i<=9; i++) {
+            document.getElementById('t'+i).innerText = d['t'+i];
+            document.getElementById('d'+i).innerText = d['d'+i];
+        }
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn' + lang.charAt(0).toUpperCase() + lang.slice(1)).classList.add('active');
+    }
+</script>
+</body>
+</html>
